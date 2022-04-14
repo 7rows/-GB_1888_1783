@@ -17,6 +17,10 @@
   color: #2c3e50;
 }
 
+h1{
+  font-size: 50px;
+}
+
 nav {
   padding: 30px;
 
