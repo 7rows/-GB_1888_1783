@@ -1,44 +1,63 @@
 <template>
   <div class="home">
-    {{ text }}
-    <br/>
-    {{ arr }}
-    <br/>
-    <MyButton>
-      <template #icon="{count, action}">
-        <button @click="action">Click action</button>>
-        + {{ count }} {{someMethod(count)}} раз 
-      </template>
-      Нажать
-    </MyButton>
-    <MyName msg="Hello" :text="text"/>
+    <header>
+      <div class="title">My personal costs</div>
+    </header>
+    <main>
+      <PaymentsDisplay :items="paymentsList"/>
+      <AddPaymentForm @addNewPayment="addPaymentData"/>
+    </main>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-import MyButton from '@/components/MyButton.vue'
-
+import PaymentsDisplay from "@/components/PaymentsDisplay.vue";
+import AddPaymentForm from "@/components/AddPaymentForm.vue";
 export default {
-  name: 'HomeView',
+  name: "HomeView",
   components: {
-    MyName: HelloWorld,
-    MyButton
+    PaymentsDisplay,
+    AddPaymentForm
 },
   data() {
     return {
-      text: "Some text",
-      arr: [1,2,3,4,5]
-    }
+      paymentsList: [],
+    };
   },
   methods: {
-    someMethod(data){
-      console.log(data)
-    }
+    addPaymentData(data) {
+      this.paymentsList.push(data)
+    },
+    fetchData() {
+      return [
+        {
+          date: "28.03.2020",
+          category: "Food",
+          value: 169,
+        },
+        {
+          date: "24.03.2020",
+          category: "Transport",
+          value: 360,
+        },
+        {
+          date: "24.03.2020",
+          category: "Food",
+          value: 532,
+        },
+      ];
+    },
   },
-}
+  created() {
+    this.paymentsList = this.fetchData()
+  },
+  mounted() {
+  },
+};
 </script>
 
-<style>
+<style lang="scss" scoped>
+.title {
+  font-size: 20px;
+}
 </style>

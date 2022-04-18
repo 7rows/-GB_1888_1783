@@ -1,12 +1,6 @@
 <template>
-  <div class="btn">
-    <!-- {{ $slots }} -->
-    <div class="icon" style="display: flex;">
-      <slot name="icon" v-bind="{count: countClick, action:action}"/>
-    </div>
-    <button @click="onClick">
-      <slot>Click</slot>
-    </button>
+  <div>
+    <button @click="onClick">Clicked {{ counter }} times!</button>
   </div>
 </template>
 <script>
@@ -14,24 +8,48 @@ export default {
   name: "MyButton",
   data() {
     return {
-      countClick: 0
+      counter: 0
     }
   },
   methods: {
-    onClick() {
-      this.countClick ++
-      this.$emit("click");
+    onClick(){
+      this.counter ++
     },
-    action(){
-      console.log('action')
+    onMouseOver(){
+      console.log('hovered')
     }
   },
-};
-</script>
-<style lang="scss" scoped>
-.btn {
-  display: flex;
-  width: 100%;
+  beforeCreate() {
+    console.log('beforeCreate')
+  },
+  created() {
+    console.log('created')
+  },
+  beforeMount() {
+    console.log('beforeMount')
+  },
+  mounted() {
+    console.log('mounted')
+    const btn = this.$el.querySelector('button')
+    if(btn) {
+      btn.addEventListener('mouseover', this.onMouseOver)
+    }
+  },
+  beforeUpdate() {
+    console.log('beforeUpdate')
+  },
+  updated() {
+    console.log('updated')
+  },
+  beforeDestroy() {
+    console.log('beforeDestroy')
+    const btn = this.$el.querySelector('button')
+    if(btn) {
+      btn.removeEventListener('mouseover', this.onMouseOver)
+    }
+  },
+  destroyed() {
+    console.log('destroyed')
+  },
 }
-
-</style>
+</script>
