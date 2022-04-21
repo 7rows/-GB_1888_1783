@@ -5,7 +5,7 @@
     </header>
     <main>
       <PaymentsDisplay :items="paymentsList"/>
-      <AddPaymentForm @addNewPayment="addPaymentData"/>
+      <AddPaymentForm @addNewPayment="addPaymentData" />
     </main>
   </div>
 </template>
