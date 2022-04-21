@@ -2,10 +2,12 @@
   <div class="home">
     <header>
       <div class="title">My personal costs</div>
+      <div>Total Price = {{getFullPaymentValue}} </div>
     </header>
     <main>
-      <PaymentsDisplay :items="paymentsList"/>
-      <AddPaymentForm @addNewPayment="addPaymentData" />
+       <AddPaymentForm />
+      <PaymentsDisplay :items="currentElements"/>
+      <MyPagination :cur="cur" :length="getPaymentsList.length" :n="n" @changePage="changePage"/>
     </main>
   </div>
 </template>
@@ -13,43 +15,42 @@
 <script>
 import PaymentsDisplay from "@/components/PaymentsDisplay.vue";
 import AddPaymentForm from "@/components/AddPaymentForm.vue";
+import { mapMutations, mapGetters } from "vuex";
+import MyPagination from "@/components/MyPagination.vue";
+
 export default {
   name: "HomeView",
   components: {
     PaymentsDisplay,
-    AddPaymentForm
+    AddPaymentForm,
+    MyPagination
 },
   data() {
     return {
-      paymentsList: [],
+      cur: 1,
+      n: 10,
     };
   },
+  computed: {
+    ...mapGetters(['getFullPaymentValue', 'getPaymentsList']),
+    currentElements(){
+      return this.getPaymentsList.slice(this.n * (this.cur - 1), this.n * (this.cur -1) + this.n)
+    }
+  },
   methods: {
+    ...mapMutations({
+      MyMutation: 'setPaymentsListData'
+    }),
     addPaymentData(data) {
       this.paymentsList.push(data)
     },
-    fetchData() {
-      return [
-        {
-          date: "28.03.2020",
-          category: "Food",
-          value: 169,
-        },
-        {
-          date: "24.03.2020",
-          category: "Transport",
-          value: 360,
-        },
-        {
-          date: "24.03.2020",
-          category: "Food",
-          value: 532,
-        },
-      ];
-    },
+    changePage(p){
+      this.cur = p
+    }
   },
   created() {
-    this.paymentsList = this.fetchData()
+    this.$store.dispatch('fetchData')
+    // this.$store.commit('setPaymentsListData', this.fetchData())
   },
   mounted() {
   },
