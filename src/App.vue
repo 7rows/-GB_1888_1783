@@ -28,7 +28,7 @@ export default {
     },
     methods: {
       setPage() {
-        this.page= location.pathname.slice(1)
+        this.page = location.pathname.slice(1)
       }
     },
     mounted() {
