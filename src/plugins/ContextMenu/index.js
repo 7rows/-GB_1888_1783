@@ -16,7 +16,6 @@ export default {
           this.caller = caller
           this.EventBus.$emit('show', {items, caller})
         }else {
-
           this.hide()
         }
        
