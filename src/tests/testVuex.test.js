@@ -1,13 +1,13 @@
-import regeneratorRuntime from "regenerator-runtime";
+import VuexComp from "../components/TestVuexComponent.vue";
 import { shallowMount, createLocalVue } from "@vue/test-utils";
-import TestVuexComponent from "../components/TestVuexComponent.vue";
 import Vuex from 'vuex'
+import { expect } from "@jest/globals";
 
 
-const LocalVue = createLocalVue()
-LocalVue.use(Vuex)
+const localVue = createLocalVue()
+localVue.use(Vuex)
 
-describe('Test Vuex', ()=>{
+describe('Test store', ()=>{
   let actions
   let store
 
@@ -15,26 +15,30 @@ describe('Test Vuex', ()=>{
     actions = {
       addData: jest.fn()
     }
+
     store = new Vuex.Store({
+      actions,
       state: {
         data: ''
-    },
-      actions
+      }
     })
   })
-
-  it('run action onSave', ()=>{
-    const wrapper = shallowMount(TestVuexComponent,{
-      store,
-      LocalVue
+  
+  it('Test Actions', ()=>{
+    const wrapper = shallowMount(VuexComp,{
+      store, localVue
     })
-    const input = wrapper.find('input')
-    input.setValue('123')
+
+    const input = wrapper.find('input') 
+    
+    input.setValue('test')
+    expect(wrapper.vm.value).toBe('test')
+
     const btn = wrapper.find('button')
     btn.trigger('click')
 
+    expect(wrapper.vm.value).toBe('test')
     expect(actions.addData).toHaveBeenCalled()
 
   })
-
 })
