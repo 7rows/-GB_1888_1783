@@ -11,10 +11,14 @@
     <transition name="fade">
         <ModalWindowAddPaymentForm :settings="settings"  v-if="modalShow"/>
     </transition>
+        <transition name="fade">
+          <ContextMenu />
+        </transition>
   </div>
 </template>
 
 <script>
+import ContextMenu from './components/ContextMenu.vue';
 export default {
   data() {
     return {
@@ -47,7 +51,7 @@ export default {
     this.$modal.EventBus.$off('show', this.onShow)
     this.$modal.EventBus.$off('hide', this.onHide)
   },
-  components: { ModalWindowAddPaymentForm:()=>import('./components/ModalWindowAddPaymentForm.vue') },
+  components: { ModalWindowAddPaymentForm: () => import("./components/ModalWindowAddPaymentForm.vue"), ContextMenu },
 };
 </script>
 
